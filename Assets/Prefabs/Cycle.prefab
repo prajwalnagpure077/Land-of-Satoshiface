@@ -125,6 +125,7 @@ MonoBehaviour:
   m_VehicleCamera: {fileID: 4459343348020010145}
   Jump: 1
   UseGround: 1
+  SnapToGroundAfterUnDrive: 0
   jumpForce: 30
   onGroundStart: {x: 0, y: -0.24, z: 0}
   onGroundEnd: {x: 0, y: -0.94, z: 0}

@@ -35,8 +35,8 @@ namespace KinematicCharacterController.Examples
             {
                 Cursor.lockState = CursorLockMode.Locked;
             }
-
-            HandleCharacterInput();
+            if (Player.IsAlive)
+                HandleCharacterInput();
         }
 
         private void LateUpdate()

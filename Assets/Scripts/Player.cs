@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public static Transform CurrentPlayer;
     public static Player Instance
     {
         get
@@ -23,11 +24,16 @@ public class Player : MonoBehaviour
         m_HealthBar.transform.localScale = new((float)m_CurrentHealth / (float)m_MaxHealth, 1, 1);
         if (m_CurrentHealth <= 0)
         {
-            //GameOver
+            if (currentVehicle != null)
+                currentVehicle.UnDrive();
+            IsAlive = false;
+            m_Animator.Play("death");
         }
     }
 
     public static Player instance;
+    public static bool IsAlive = true;
+    public static Vehical currentVehicle;
     [SerializeField] internal ExampleCharacterController m_ExampleCharacterController;
     [SerializeField] ExampleCharacterCamera CharacterCamera;
     [SerializeField] GameObject m_model_character;
@@ -43,6 +49,7 @@ public class Player : MonoBehaviour
         normalSpeed = m_ExampleCharacterController.MaxStableMoveSpeed;
         lastCharacterPos = m_player.position;
         camera = Camera.main;
+        CurrentPlayer = m_ExampleCharacterController.transform;
     }
 
     Vector3 lastCharacterPos;

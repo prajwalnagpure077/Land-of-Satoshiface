@@ -668,10 +668,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GizmoMesh: {fileID: -2124705421725058983, guid: b243bed3c2a93d5458a29eeeb9231d95, type: 3}
-  PlayerTransform: {fileID: 0}
-  maxViewAngle: 60
-  maxViewDistance: 18
-  AttackRange: 3.78
+  maxViewAngle: 120
+  maxViewDistance: 25
+  AttackRange: 12
   m_NavMeshAgent: {fileID: 3351821036557429864}
   m_Animator: {fileID: 3351821036965862528}
 --- !u!1 &4104511019652280913

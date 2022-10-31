@@ -926,7 +926,6 @@ GameObject:
   - component: {fileID: 2833296335317945256}
   - component: {fileID: 6642952473532528305}
   - component: {fileID: 7994051624585191464}
-  - component: {fileID: 279550944717762746}
   m_Layer: 0
   m_Name: cybertruck_tyres
   m_TagString: Untagged
@@ -999,20 +998,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &279550944717762746
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2834634806120620227}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4861041020387510811, guid: bee974e7acde8cf43bf1ae73c3dd23ab, type: 3}
 --- !u!1 &2908944438343482285
 GameObject:
   m_ObjectHideFlags: 0
@@ -1254,6 +1239,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2426139133556531272}
   - component: {fileID: 7335862808977702680}
+  - component: {fileID: 5558727008168087675}
   m_Layer: 0
   m_Name: Cyber_truck
   m_TagString: Untagged
@@ -1313,10 +1299,24 @@ MonoBehaviour:
   m_VehicleCamera: {fileID: 2943706260371345260}
   Jump: 0
   UseGround: 1
+  SnapToGroundAfterUnDrive: 0
   jumpForce: 1
   onGroundStart: {x: 0, y: 0, z: 0}
   onGroundEnd: {x: 0, y: 0, z: 0}
   ObjectToEnableWhileRiding: {fileID: 3481906817671266133}
+--- !u!65 &5558727008168087675
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3089662981198314226}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3.846002, y: 3.3774638, z: 10.377778}
+  m_Center: {x: 1.3957042, y: 0, z: -0.7075751}
 --- !u!1 &3120300245033025270
 GameObject:
   m_ObjectHideFlags: 0
@@ -3403,7 +3403,6 @@ GameObject:
   - component: {fileID: 2604131677213396034}
   - component: {fileID: 5052792310794069193}
   - component: {fileID: 4620559750323065036}
-  - component: {fileID: 1049044438627922006}
   m_Layer: 0
   m_Name: cybertruck_body
   m_TagString: Untagged
@@ -3477,20 +3476,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &1049044438627922006
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7401524021765622279}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -59118886740087222, guid: bee974e7acde8cf43bf1ae73c3dd23ab, type: 3}
 --- !u!1 &7653347165778815444
 GameObject:
   m_ObjectHideFlags: 0

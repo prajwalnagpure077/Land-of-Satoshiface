@@ -7,7 +7,7 @@ public class Projectile : MonoBehaviour
     private void Awake()
     {
         StartCoroutine(destroyDelay());
-        transform.rotation = Quaternion.LookRotation(transform.forward, Player.instance.transform.position);
+        transform.rotation = Quaternion.LookRotation(transform.forward, Player.CurrentPlayer.position);
     }
 
     private void OnTriggerEnter(Collider other)

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using KinematicCharacterController.Examples;
 using UnityEngine;
 
 public class Vehical : MonoBehaviour
@@ -11,12 +12,12 @@ public class Vehical : MonoBehaviour
     [SerializeField] bool RotateOnlyInMotion = false;
     [SerializeField] float DistanceNeededForRotation = 1;
     [SerializeField] VehicleCamera m_VehicleCamera;
-    [SerializeField] bool Jump = false, UseGround = true;
+    [SerializeField] bool Jump = false, UseGround = true, SnapToGroundAfterUnDrive;
     [SerializeField] float jumpForce = 1;
     [SerializeField] Vector3 onGroundStart, onGroundEnd;
     [SerializeField] GameObject ObjectToEnableWhileRiding;
 
-    float RotationYOffset;
+    float RotationYOffset, Idle_Y_Offset;
     Rigidbody m_rigidbody;
     GameObject m_Indicator;
     Player m_Player;
@@ -26,6 +27,7 @@ public class Vehical : MonoBehaviour
 
     private void Start()
     {
+        gameObject.tag = "Vehicle";
         GameObject l_fpsHook = new GameObject();
         camera = Camera.main;
         m_Player = Player.Instance;
@@ -35,64 +37,74 @@ public class Vehical : MonoBehaviour
         RotationYOffset = m_VehicleCamera.transform.rotation.y;
         if (ObjectToEnableWhileRiding != null)
             ObjectToEnableWhileRiding.SetActive(false);
+        Idle_Y_Offset = transform.position.y;
     }
     void Update()
     {
-
-        if (Input.GetKeyDown(m_KeyCode))
+        if (Player.IsAlive)
         {
-            if (IsRiding)
+            if (Input.GetKeyDown(m_KeyCode))
             {
-                UnDrive();
+                if (IsRiding)
+                {
+                    UnDrive();
+                }
+                else if (Vector3.Distance(transform.position, m_PlayerTransform.transform.position) <= m_Distance)
+                {
+                    Drive();
+                }
             }
-            else if (Vector3.Distance(transform.position, m_PlayerTransform.transform.position) <= m_Distance)
-            {
-                Drive();
-            }
-        }
 
-        if (Vector3.Distance(transform.position, m_PlayerTransform.transform.position) <= m_Distance && IsRiding == false)
-        {
-            m_Indicator.SetActive(true);
+            if (Vector3.Distance(transform.position, m_PlayerTransform.transform.position) <= m_Distance && IsRiding == false)
+            {
+                m_Indicator.SetActive(true);
+            }
+            else
+            {
+                m_Indicator.SetActive(false);
+            }
+
+            if (IsRiding && m_rigidbody != null)
+            {
+                if (Input.GetKey(KeyCode.W))
+                {
+                    m_rigidbody.AddForce(transform.forward * speed);
+                }
+                if (Input.GetKey(KeyCode.S))
+                {
+                    m_rigidbody.AddForce(-transform.forward * speed);
+                }
+                if (Jump && Input.GetKeyDown(KeyCode.Space) && (UseGround == false || isOnGround()))
+                {
+                    m_rigidbody.AddForce(new Vector3(0, jumpForce, 0), ForceMode.Impulse);
+                }
+                // if (Input.GetKey(KeyCode.A))
+                // {
+                //     m_rigidbody.AddForce(-transform.right * speed);
+                // }
+                // if (Input.GetKey(KeyCode.D))
+                // {
+                //     m_rigidbody.AddForce(transform.right * speed);
+                // }
+                var rotation = m_VehicleCamera.player.transform.rotation;
+                rotation.x = transform.rotation.x;
+                rotation.z = transform.rotation.z;
+                rotation.y -= RotationYOffset;
+                transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * cameraSpeed * ((RotateOnlyInMotion) ? Vector3.Distance(transform.position, lastPos) * DistanceNeededForRotation : 1));
+            }
+            lastPos = transform.position;
         }
         else
         {
             m_Indicator.SetActive(false);
         }
-
-        if (IsRiding && m_rigidbody != null)
-        {
-            if (Input.GetKey(KeyCode.W))
-            {
-                m_rigidbody.AddForce(transform.forward * speed);
-            }
-            if (Input.GetKey(KeyCode.S))
-            {
-                m_rigidbody.AddForce(-transform.forward * speed);
-            }
-            if (Jump && Input.GetKeyDown(KeyCode.Space) && (UseGround == false || isOnGround()))
-            {
-                m_rigidbody.AddForce(new Vector3(0, jumpForce, 0), ForceMode.Impulse);
-            }
-            // if (Input.GetKey(KeyCode.A))
-            // {
-            //     m_rigidbody.AddForce(-transform.right * speed);
-            // }
-            // if (Input.GetKey(KeyCode.D))
-            // {
-            //     m_rigidbody.AddForce(transform.right * speed);
-            // }
-            var rotation = m_VehicleCamera.player.transform.rotation;
-            rotation.x = transform.rotation.x;
-            rotation.z = transform.rotation.z;
-            rotation.y -= RotationYOffset;
-            transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * cameraSpeed * ((RotateOnlyInMotion) ? Vector3.Distance(transform.position, lastPos) * DistanceNeededForRotation : 1));
-        }
-        lastPos = transform.position;
     }
 
     private void Drive()
     {
+        Player.currentVehicle = this;
+        gameObject.tag = "Player";
+        Player.CurrentPlayer = transform;
         m_VehicleCamera.gameObject.SetActive(true);
         m_Player.Ride();
         IsRiding = true;
@@ -101,16 +113,36 @@ public class Vehical : MonoBehaviour
         if (ObjectToEnableWhileRiding != null)
             ObjectToEnableWhileRiding.SetActive(true);
     }
-    private void UnDrive()
+    internal void UnDrive()
     {
+        Player.currentVehicle = null;
+        gameObject.tag = "Vehicle";
+        Player.CurrentPlayer = Player.instance.m_ExampleCharacterController.transform;
         if (Physics.Linecast(m_PlayerExitHook.position, m_PlayerExitHook.position - new Vector3(0, 10, 0), out RaycastHit hit))
         {
-            m_Player.m_ExampleCharacterController.transform.position = hit.point + new Vector3(0, 0.1f, 0);
+            ExampleCharacterController cc = m_Player.m_ExampleCharacterController;
+            if (cc)
+            {
+                cc.Motor.SetPositionAndRotation(hit.point + new Vector3(0, 0.1f, 0), Quaternion.identity);
+            }
         }
         else
         {
-            m_Player.m_ExampleCharacterController.transform.position = m_PlayerExitHook.position;
+            ExampleCharacterController cc = m_Player.m_ExampleCharacterController;
+            if (cc)
+            {
+                cc.Motor.SetPositionAndRotation(m_PlayerExitHook.position, Quaternion.identity);
+            }
         }
+
+        if (SnapToGroundAfterUnDrive)
+        {
+            if (Physics.Linecast(transform.position - new Vector3(0, 0.1f, 0), transform.position - new Vector3(0, 10, 0), out RaycastHit hit1))
+            {
+                transform.position = hit1.point + new Vector3(0, Idle_Y_Offset, 0);
+            }
+        }
+
 
         m_Player.UnRide();
         m_VehicleCamera.gameObject.SetActive(false);

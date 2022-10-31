@@ -7,7 +7,6 @@ using UnityEngine.AI;
 public class AI_Navigation : MonoBehaviour
 {
     [SerializeField] Mesh GizmoMesh;
-    [SerializeField] Transform PlayerTransform;
     [SerializeField] float maxViewAngle, maxViewDistance, AttackRange;
     [SerializeField] NavMeshAgent m_NavMeshAgent;
     [SerializeField] Animator m_Animator;
@@ -18,17 +17,17 @@ public class AI_Navigation : MonoBehaviour
 
     private void Update()
     {
-        Vector3 TargetDirection = PlayerTransform.position - transform.position;
+        Vector3 TargetDirection = Player.CurrentPlayer.position - transform.position;
         float angle = Vector3.Angle(transform.forward, TargetDirection);
-        PlayerInRange = (angle <= maxViewAngle && Vector3.Distance(transform.position, PlayerTransform.position) < maxViewDistance);
+        PlayerInRange = (angle <= maxViewAngle && Vector3.Distance(transform.position, Player.CurrentPlayer.position) < maxViewDistance);
         MovementCheck();
     }
 
     void MovementCheck()
     {
         if (PlayerInRange)
-            m_NavMeshAgent.SetDestination(PlayerTransform.position);
-        m_NavMeshAgent.isStopped = (Vector3.Distance(transform.position, PlayerTransform.position) < AttackRange);
+            m_NavMeshAgent.SetDestination(Player.CurrentPlayer.position);
+        m_NavMeshAgent.isStopped = (Vector3.Distance(transform.position, Player.CurrentPlayer.position) < AttackRange);
         if (m_NavMeshAgent.isStopped == false && PlayerInRange == false)
         {
             m_NavMeshAgent.SetDestination(transform.position);
@@ -62,7 +61,8 @@ public class AI_Navigation : MonoBehaviour
 
     void shoot()
     {
-        m_Animator.SetTrigger("Shoot");
+        if (Player.IsAlive)
+            m_Animator.SetTrigger("Shoot");
     }
     void Run(bool t)
     {
@@ -71,8 +71,8 @@ public class AI_Navigation : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawLine(transform.position, transform.position + (Vector3)(Quaternion.Euler(0, maxViewAngle, 0) * Vector3.forward * maxViewDistance));
-        Gizmos.DrawLine(transform.position, transform.position + (Vector3)(Quaternion.Euler(0, -maxViewAngle, 0) * Vector3.forward * maxViewDistance));
+        Gizmos.DrawLine(transform.position, transform.position + (Vector3)(Quaternion.Euler(0, transform.rotation.eulerAngles.y + maxViewAngle, 0) * Vector3.forward * maxViewDistance));
+        Gizmos.DrawLine(transform.position, transform.position + (Vector3)(Quaternion.Euler(0, transform.rotation.eulerAngles.y - maxViewAngle, 0) * Vector3.forward * maxViewDistance));
         Gizmos.DrawMesh(GizmoMesh, transform.position, Quaternion.identity, Vector3.one * maxViewDistance);
         Gizmos.color = Color.red;
         Gizmos.DrawMesh(GizmoMesh, transform.position, Quaternion.identity, Vector3.one * AttackRange);
