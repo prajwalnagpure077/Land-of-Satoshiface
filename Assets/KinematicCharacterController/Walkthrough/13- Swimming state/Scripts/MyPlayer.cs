@@ -21,7 +21,7 @@ namespace KinematicCharacterController.Walkthrough.SwimmingState
 
         private void Start()
         {
-            Cursor.lockState = CursorLockMode.Locked;
+            // Cursor.lockState = CursorLockMode.Locked;
 
             // Tell camera to follow transform
             OrbitCamera.SetFollowTransform(CameraFollowPoint);
@@ -33,10 +33,10 @@ namespace KinematicCharacterController.Walkthrough.SwimmingState
 
         private void Update()
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                Cursor.lockState = CursorLockMode.Locked;
-            }
+            // if (Input.GetMouseButtonDown(0))
+            // {
+            //     Cursor.lockState = CursorLockMode.Locked;
+            // }
 
             HandleCharacterInput();
         }

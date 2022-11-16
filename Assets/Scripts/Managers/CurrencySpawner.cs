@@ -23,9 +23,9 @@ public class CurrencySpawner : MonoBehaviour
     {
     Recursion:
         Vector3 RandomPos = new Vector3(Random.Range(m_Start.position.x, m_End.position.x), 20, Random.Range(m_Start.position.z, m_End.position.z));
-        if (Physics.Linecast(RandomPos, RandomPos - new Vector3(0, 25, 0), out RaycastHit hit) && hit.collider.CompareTag("Ground"))
+        if (Physics.Linecast(RandomPos, RandomPos - new Vector3(0, 25, 0), out RaycastHit hit))
         {
-            Instantiate(_prefab, hit.point + new Vector3(0, m_HeightOffset, 0), Quaternion.identity);
+            Instantiate(_prefab, hit.point + new Vector3(0, Mathf.Lerp(m_HeightOffset, m_HeightOffset * 5, Random.value), 0), Quaternion.identity);
         }
         else
         {

@@ -83,11 +83,6 @@ namespace KinematicCharacterController.Examples
         private float _timeSinceJumpRequested = Mathf.Infinity;
         private float _timeSinceLastAbleToJump = 0f;
         private Vector3 _internalVelocityAdd = Vector3.zero;
-        private bool _shouldBeCrouching = false;
-        private bool _isCrouching = false;
-
-        private Vector3 lastInnerNormal = Vector3.zero;
-        private Vector3 lastOuterNormal = Vector3.zero;
 
         private void Awake()
         {

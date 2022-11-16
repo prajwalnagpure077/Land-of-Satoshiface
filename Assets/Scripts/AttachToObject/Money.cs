@@ -1,9 +1,10 @@
 using UnityEngine;
-
+using static Extras;
 public class Money : MonoBehaviour
 {
     [SerializeField] int m_money;
     [SerializeField] bool rotate;
+    [SerializeField] bool goldenBit = false;
     private void Start()
     {
         if (rotate)
@@ -15,9 +16,13 @@ public class Money : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            MoneyManager.Instance.AddMoney(m_money);
+            if (goldenBit)
+                MoneyManager.Instance.addGoldenBit(m_money);
+            else
+                MoneyManager.Instance.AddCoinConnectCashChange(m_money);
             MoneyManager.Instance.toRotateList.Remove(transform);
-            Destroy(gameObject);
+            gameObject.SetActive(false);
+            delayActive(3600f, gameObject);
         }
     }
 }

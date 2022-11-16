@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using KinematicCharacterController.Examples;
 using UnityEngine;
+using TMPro;
 
 public class Vehical : MonoBehaviour
 {
@@ -17,7 +18,12 @@ public class Vehical : MonoBehaviour
     [SerializeField] Vector3 onGroundStart, onGroundEnd;
     [SerializeField] GameObject ObjectToEnableWhileRiding;
 
-    float RotationYOffset, Idle_Y_Offset;
+    [Header("Extra Stuff")]
+    [SerializeField] TextMeshProUGUI MPH_Meter;
+    [SerializeField] Transform Gas_Meter;
+    [SerializeField] float maxGas, gasPerMile;
+
+    float RotationYOffset, Idle_Y_Offset, currentGas;
     Rigidbody m_rigidbody;
     GameObject m_Indicator;
     Player m_Player;
@@ -27,6 +33,7 @@ public class Vehical : MonoBehaviour
 
     private void Start()
     {
+        currentGas = maxGas;
         gameObject.tag = "Vehicle";
         GameObject l_fpsHook = new GameObject();
         camera = Camera.main;
@@ -90,13 +97,32 @@ public class Vehical : MonoBehaviour
                 rotation.x = transform.rotation.x;
                 rotation.z = transform.rotation.z;
                 rotation.y -= RotationYOffset;
-                transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * cameraSpeed * ((RotateOnlyInMotion) ? Vector3.Distance(transform.position, lastPos) * DistanceNeededForRotation : 1));
+                float currentSpeed = Vector3.Distance(transform.position, lastPos);
+                transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * cameraSpeed * ((RotateOnlyInMotion) ? currentSpeed * DistanceNeededForRotation : 1));
             }
             lastPos = transform.position;
         }
         else
         {
             m_Indicator.SetActive(false);
+        }
+
+
+        // 3.6f to convert in kilometers
+        // ** The speed must be clamped by the car controller **
+        if (m_rigidbody)
+        {
+            float _speed = m_rigidbody.velocity.magnitude * 3.6f;
+
+            if (MPH_Meter != null)
+                MPH_Meter.text = ((int)_speed) + " MPH";
+
+            if (Gas_Meter != null)
+            {
+                float factor = _speed * gasPerMile * (Time.deltaTime / 3600);
+                currentGas -= factor;
+                Gas_Meter.localScale = new Vector3(currentGas / maxGas, 1, 1);
+            }
         }
     }
 

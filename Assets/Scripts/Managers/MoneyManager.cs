@@ -5,23 +5,24 @@ using TMPro;
 
 public class MoneyManager : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI M_MoneyText;
-
-
     public static MoneyManager Instance;
-    public static int currentMoney = 0;
+
     internal List<Transform> toRotateList = new();
     private void Awake()
     {
         Instance = this;
         StartCoroutine(rotateMoney());
-        AddMoney(0);
+        AddCoinConnectCashChange(0);
+        addGoldenBit(0);
     }
 
-    internal void AddMoney(int t)
+    internal void AddCoinConnectCashChange(int t)
     {
-        currentMoney += t;
-        OnMoneyChange();
+        StaticGamemanager.gameDataStructure.CoinConnect_Cash.Value += t;
+    }
+    internal void addGoldenBit(int t)
+    {
+        StaticGamemanager.gameDataStructure.GoldenBit.Value += t;
     }
 
     IEnumerator rotateMoney()
@@ -31,13 +32,50 @@ public class MoneyManager : MonoBehaviour
             yield return new WaitForEndOfFrame();
             foreach (var item in toRotateList)
             {
-                item.Rotate(new Vector3(0, 1, 0), Space.World);
+                if (item)
+                    item.Rotate(new Vector3(0, 1, 0), Space.World);
             }
         }
     }
 
-    void OnMoneyChange()
+    public static bool Buy(bool CoinConnect_Cash, int cost)
     {
-        M_MoneyText.text = currentMoney.ToString("0");
+        if (CoinConnect_Cash)
+        {
+            if (StaticGamemanager.gameDataStructure.CoinConnect_Cash.Value >= cost)
+            {
+                StaticGamemanager.gameDataStructure.CoinConnect_Cash.Value -= cost;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            if (StaticGamemanager.gameDataStructure.GoldenBit.Value >= cost)
+            {
+                StaticGamemanager.gameDataStructure.GoldenBit.Value -= cost;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+    }
+
+    public static bool canBuy(bool CoinConnect_Cash, int cost)
+    {
+        if (CoinConnect_Cash)
+        {
+            return StaticGamemanager.gameDataStructure.CoinConnect_Cash.Value >= cost;
+        }
+        else
+        {
+            return StaticGamemanager.gameDataStructure.GoldenBit.Value >= cost;
+        }
     }
 }

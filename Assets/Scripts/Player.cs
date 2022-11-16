@@ -16,9 +16,9 @@ public class Player : MonoBehaviour
             return instance;
         }
     }
-    [SerializeField] int m_CurrentHealth, m_MaxHealth;
+    [SerializeField] float m_CurrentHealth, m_MaxHealth;
     [SerializeField] GameObject m_HealthBar;
-    internal void DealDamage(int Damage)
+    internal void DealDamage(float Damage)
     {
         m_CurrentHealth = Mathf.Clamp(m_CurrentHealth - Damage, 0, m_MaxHealth);
         m_HealthBar.transform.localScale = new((float)m_CurrentHealth / (float)m_MaxHealth, 1, 1);
@@ -29,6 +29,14 @@ public class Player : MonoBehaviour
             IsAlive = false;
             m_Animator.Play("death");
         }
+    }
+
+    internal void dealDamagerPerHour(float hours)
+    {
+        float dealDamageInSeconds = hours * 3600f;
+        float factor = Time.deltaTime / dealDamageInSeconds;
+        float damageFactor = Mathf.Lerp(0, m_MaxHealth, factor);
+        DealDamage(damageFactor);
     }
 
     public static Player instance;

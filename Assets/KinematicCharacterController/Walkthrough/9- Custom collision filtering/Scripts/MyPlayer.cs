@@ -32,10 +32,10 @@ namespace KinematicCharacterController.Walkthrough.CollisionFiltering
 
         private void Update()
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                Cursor.lockState = CursorLockMode.Locked;
-            }
+            // if (Input.GetMouseButtonDown(0))
+            // {
+            //     Cursor.lockState = CursorLockMode.Locked;
+            // }
 
             HandleCharacterInput();
         }

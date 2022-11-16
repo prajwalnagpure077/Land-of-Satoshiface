@@ -13,7 +13,7 @@ public class IndicatorManager : MonoBehaviour
         Indicator _indicator;
         Camera camera = Camera.main;
         _indicator = Instantiate(Instance.m_indicator, camera.WorldToScreenPoint(target.position), Quaternion.identity);
-        _indicator.transform.parent = Instance.transform;
+        _indicator.transform.SetParent(Instance.transform);
         _indicator.Init(target, camera, text);
         return _indicator.gameObject;
     }

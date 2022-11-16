@@ -17,7 +17,7 @@ namespace KinematicCharacterController.Walkthrough.PlayerCameraCharacterSetup
 
         private void Start()
         {
-            Cursor.lockState = CursorLockMode.Locked;
+            // Cursor.lockState = CursorLockMode.Locked;
 
             // Tell camera to follow transform
             OrbitCamera.SetFollowTransform(CameraFollowPoint);
@@ -28,10 +28,10 @@ namespace KinematicCharacterController.Walkthrough.PlayerCameraCharacterSetup
 
         private void Update()
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                Cursor.lockState = CursorLockMode.Locked;
-            }
+            // if (Input.GetMouseButtonDown(0))
+            // {
+            //     Cursor.lockState = CursorLockMode.Locked;
+            // }
         }
 
         private void LateUpdate()
@@ -54,9 +54,9 @@ namespace KinematicCharacterController.Walkthrough.PlayerCameraCharacterSetup
 
             // Input for zooming the camera (disabled in WebGL because it can cause problems)
             float scrollInput = -Input.GetAxis("Mouse ScrollWheel");
-    #if UNITY_WEBGL
+#if UNITY_WEBGL
             scrollInput = 0f;
-    #endif
+#endif
 
             // Apply inputs to the camera
             OrbitCamera.UpdateWithInput(Time.deltaTime, scrollInput, _lookInputVector);
