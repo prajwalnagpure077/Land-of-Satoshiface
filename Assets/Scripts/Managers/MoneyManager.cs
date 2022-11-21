@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEditor;
 
 public class MoneyManager : MonoBehaviour
 {
@@ -12,15 +13,15 @@ public class MoneyManager : MonoBehaviour
     {
         Instance = this;
         StartCoroutine(rotateMoney());
-        AddCoinConnectCashChange(0);
+        AddCoinConnectCash(0);
         addGoldenBit(0);
     }
 
-    internal void AddCoinConnectCashChange(int t)
+    public static void AddCoinConnectCash(int t)
     {
         StaticGamemanager.gameDataStructure.CoinConnect_Cash.Value += t;
     }
-    internal void addGoldenBit(int t)
+    public static void addGoldenBit(int t)
     {
         StaticGamemanager.gameDataStructure.GoldenBit.Value += t;
     }
@@ -78,4 +79,30 @@ public class MoneyManager : MonoBehaviour
             return StaticGamemanager.gameDataStructure.GoldenBit.Value >= cost;
         }
     }
+
+#if UNITY_EDITOR
+    [MenuItem("Tools/Add 10 Cash")]
+    static void add10Cash()
+    {
+        AddCoinConnectCash(10);
+    }
+
+    [MenuItem("Tools/Add 10 bit")]
+    static void add10Bit()
+    {
+        addGoldenBit(10);
+    }
+
+    [MenuItem("Tools/Add 100 Cash")]
+    static void add100Cash()
+    {
+        AddCoinConnectCash(100);
+    }
+
+    [MenuItem("Tools/Add 100 bit")]
+    static void add100Bit()
+    {
+        addGoldenBit(100);
+    }
+#endif
 }

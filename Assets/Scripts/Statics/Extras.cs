@@ -51,6 +51,22 @@ public static class Extras
     {
         return (t) ? "<line-height=1em>" : "<line-height=0>";
     }
+    public static List<Item> addItemIncludeCount(this List<Item> items, Item item)
+    {
+        var searchResult = items.findWithName(item.name);
+        if (searchResult != null)
+        {
+            searchResult.count += 1;
+            item.count -= 1;
+            return items;
+        }
+        else
+        {
+            item.count -= 1;
+            items.Add(item with { count = 1 });
+            return items;
+        }
+    }
 
 
 

@@ -3,8 +3,8 @@ using UnityEngine;
 
 public static class StaticGamemanager
 {
-    static StaticConstructor staticConstructor = new();
     public static GameDataStructure gameDataStructure = new();
+    static StaticConstructor staticConstructor = new();
     public static S_Collections s_Collections;
 
     public static void loadGameDataStructure()
@@ -31,7 +31,8 @@ public static class StaticGamemanager
 
     public static void SaveGameDataStructure(bool newObj = false)
     {
-        string serializedData = JsonConvert.SerializeObject((gameDataStructure == null || newObj) ? new GameDataStructure() : gameDataStructure);
+        string serializedData = JsonUtility.ToJson((gameDataStructure == null || newObj) ? new GameDataStructure() : gameDataStructure);
+        Debug.LogError(serializedData);
         PlayerPrefs.SetString("GameDataStructure", serializedData);
     }
 }

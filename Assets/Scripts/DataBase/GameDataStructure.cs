@@ -21,12 +21,12 @@ public record GameDataStructure
 [Serializable]
 public record Item
 {
-    [field: SerializeField] public string name { get; set; } = "Unknown";
-    [field: SerializeField] public ItemType itemType { get; set; } = ItemType.things;
-    [field: SerializeField] public int intValue { get; set; } = 0;
-    [field: SerializeField] public float floatValue { get; set; } = 0;
-    [field: SerializeField] public int priceInCash { get; set; } = 0;
-    [field: SerializeField] public int count { get; set; } = 0;
+    [field: SerializeField] public string name;
+    [field: SerializeField] public ItemType itemType;
+    [field: SerializeField] public int intValue;
+    [field: SerializeField] public float floatValue;
+    [field: SerializeField] public int priceInCash;
+    [field: SerializeField] public int count;
 
     public override string ToString()
     {
@@ -34,6 +34,7 @@ public record Item
     }
 }
 
+[Serializable]
 public enum ItemType
 {
     food,
@@ -43,9 +44,9 @@ public enum ItemType
 [Serializable]
 public record Property
 {
-    [field: SerializeField] public string name { get; set; }
-    [field: SerializeField] public int propertyCode { get; set; }
-    [field: SerializeField] public int priceInCash { get; set; }
+    [field: SerializeField] public string name;
+    [field: SerializeField] public int propertyCode;
+    [field: SerializeField] public int priceInCash;
 
 
     public override string ToString()

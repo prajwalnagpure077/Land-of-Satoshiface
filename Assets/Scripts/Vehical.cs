@@ -56,7 +56,7 @@ public class Vehical : MonoBehaviour
                 {
                     UnDrive();
                 }
-                else if (Vector3.Distance(transform.position, m_PlayerTransform.transform.position) <= m_Distance)
+                else if (Vector3.Distance(transform.position, m_PlayerTransform.transform.position) <= m_Distance && Player.currentVehicle == null && m_Indicator.activeSelf)
                 {
                     Drive();
                 }

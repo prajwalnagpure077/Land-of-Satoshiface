@@ -17,9 +17,9 @@ public class Money : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             if (goldenBit)
-                MoneyManager.Instance.addGoldenBit(m_money);
+                MoneyManager.addGoldenBit(m_money);
             else
-                MoneyManager.Instance.AddCoinConnectCashChange(m_money);
+                MoneyManager.AddCoinConnectCash(m_money);
             MoneyManager.Instance.toRotateList.Remove(transform);
             gameObject.SetActive(false);
             delayActive(3600f, gameObject);

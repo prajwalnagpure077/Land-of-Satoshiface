@@ -12,5 +12,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7a12fbca664d614d82a0af2df1a6902, type: 3}
   m_Name: S_Collections
   m_EditorClassIdentifier: 
-  ItemsCanCollect: []
+  ItemsCanCollect:
+  - name: Pizza
+    itemType: 0
+    intValue: 0
+    floatValue: 0
+    priceInCash: 60
+    count: 2
+  - name: Cake
+    itemType: 0
+    intValue: 0
+    floatValue: 0
+    priceInCash: 23
+    count: 2
+  - name: Something
+    itemType: 0
+    intValue: 0
+    floatValue: 0
+    priceInCash: 700
+    count: 5
+  - name: Bat
+    itemType: 0
+    intValue: 0
+    floatValue: 0
+    priceInCash: 599
+    count: 5
+  - name: Ball
+    itemType: 0
+    intValue: 0
+    floatValue: 0
+    priceInCash: 699
+    count: 5
   PropertiesCanCollect: []

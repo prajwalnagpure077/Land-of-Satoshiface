@@ -58,6 +58,7 @@ public class Player : MonoBehaviour
         lastCharacterPos = m_player.position;
         camera = Camera.main;
         CurrentPlayer = m_ExampleCharacterController.transform;
+        currentVehicle = null;
     }
 
     Vector3 lastCharacterPos;
