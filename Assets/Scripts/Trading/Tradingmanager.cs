@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class Tradingmanager : SingleTon<Tradingmanager>
@@ -13,6 +14,10 @@ public class Tradingmanager : SingleTon<Tradingmanager>
     {
         TradingScreen.SetActive(false);
         RefreshItems();
+        RefreshProperties();
+        sellItemPanel.SetActive(false);
+        sellPropertyPanel.SetActive(false);
+        ChatPanelVisibility(false);
     }
 
     [ContextMenu("addItem")]
@@ -27,7 +32,7 @@ public class Tradingmanager : SingleTon<Tradingmanager>
         addPropetryUI(new Property() { propertyCode = 2 });
     }
 
-    public static void addItemUI(Item item)
+    private void addItemUI(Item item)
     {
         if (item != null)
         {
@@ -46,7 +51,7 @@ public class Tradingmanager : SingleTon<Tradingmanager>
         }
     }
 
-    public static void addPropetryUI(Property property)
+    private void addPropetryUI(Property property)
     {
         if (property != null)
         {
@@ -81,6 +86,8 @@ public class Tradingmanager : SingleTon<Tradingmanager>
 
 
     #region ItemBuy
+    [Space(30)]
+    [Header("Item Buy")]
     [SerializeField] Transform _itemBuyContainer;
     [SerializeField] AttachedData _itemBuyPrefab;
 
@@ -93,6 +100,17 @@ public class Tradingmanager : SingleTon<Tradingmanager>
         foreach (var item in StaticGamemanager.gameDataStructure.itemsCollected)
         {
             addItemUI(item);
+        }
+    }
+    public void RefreshProperties()
+    {
+        foreach (Transform child in _PropertySpawnContainer)
+        {
+            Destroy(child.gameObject);
+        }
+        foreach (var item in StaticGamemanager.gameDataStructure.PropertiesCollected)
+        {
+            addPropetryUI(item);
         }
     }
 
@@ -160,9 +178,93 @@ public class Tradingmanager : SingleTon<Tradingmanager>
 
 
     #region PropertyBuy
+    [Space(30)]
+    [Header("Property Buy")]
+    [SerializeField] AttachedData _propertyBuyBlock;
     public void SetSellPropertyPanel(bool t)
     {
         sellPropertyPanel.SetActive(t);
     }
+
+    public void addPropertyToSale(Property property, UnityAction onPropertyBuy)
+    {
+        if (_propertyBuyBlock.getComponentByName("buyButton", out Button buyButton))
+        {
+            buyButton.onClick.RemoveAllListeners();
+            buyButton.onClick.AddListener(onPropertyBuy);
+        }
+        if (_propertyBuyBlock.getComponentByName("tradeDetails", out TextMeshProUGUI tradeDetailsText))
+        {
+            tradeDetailsText.text = "Trade Open" + "\n" + "crypnet: Plot " + property.propertyCode.ToString("0000") + " = " + property.priceInCash + " GBIT";
+        }
+    }
     #endregion
+
+
+
+    #region Chat System
+    [Space(30)]
+    [Header("Chat")]
+    [SerializeField] GameObject _chatPanel;
+    [SerializeField] TextMeshProUGUI _chatText;
+    [SerializeField] String _nameColor, _messageColor;
+    public void ChangeChat(string chatStr)
+    {
+        _chatText.text = chatStr;
+    }
+    public void AddToChat(string newChat)
+    {
+        _chatText.text += "\n" + newChat;
+    }
+    public void ChangeChat(string name, string chatStr)
+    {
+        _chatText.text = $"<color={_nameColor}>" + name + ": " + $"<color={_messageColor}>" + chatStr + "</color>";
+    }
+    public void AddToChat(string name, string newChat)
+    {
+        _chatText.text += "\n" + $"<color={_nameColor}>" + name + ": " + $"<color={_messageColor}>" + newChat + "</color>";
+    }
+    public void ChatPanelVisibility(bool t)
+    {
+        _chatPanel.SetActive(t);
+    }
+    #endregion
+
+
+    [ContextMenu("ChangeChat")]
+    private void changeKKK()
+    {
+        ChangeChat("Heiifasdkfn");
+    }
+
+    [ContextMenu("ChangeChat2")]
+    private void changeKKK2()
+    {
+        ChangeChat("Heiifasdkfn", "hello");
+    }
+
+    [ContextMenu("add Chat")]
+    private void addChatkkk()
+    {
+        AddToChat("kya bolti public!");
+    }
+
+    [ContextMenu("add Chat2")]
+    private void addChatkkk2()
+    {
+        AddToChat("Prajwal", "kya bolti public!");
+    }
+
+
+    [ContextMenu("Chat True")]
+    public void kfalsdkfj()
+    {
+        ChatPanelVisibility(true);
+    }
+
+    [ContextMenu("Chat false")]
+    public void kfalsdkfj2()
+    {
+        ChatPanelVisibility(false);
+    }
 }

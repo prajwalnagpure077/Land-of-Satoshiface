@@ -74,12 +74,13 @@ public static class Extras
 
 
 
-
+#if UNITY_EDITOR
     [MenuItem("Tools/Delete All Player Preffs")]
     public static void DeletePlayerPreff()
     {
         PlayerPrefs.DeleteAll();
     }
+#endif
 
 }
 
