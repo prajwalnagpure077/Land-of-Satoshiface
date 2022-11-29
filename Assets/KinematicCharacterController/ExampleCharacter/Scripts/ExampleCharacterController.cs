@@ -496,17 +496,9 @@ namespace KinematicCharacterController.Examples
         {
         }
 
-        bool initialLand = false;
         protected void OnLanded()
         {
-            if (initialLand)
-            {
-                m_player.SetJumpEnd();
-            }
-            else
-            {
-                initialLand = true;
-            }
+            m_player.SetJumpEnd();
         }
 
         protected void OnLeaveStableGround()

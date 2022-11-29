@@ -3,8 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Newtonsoft.Json;
+
 using UnityEngine;
 
+[Serializable]
 public record GameDataStructure
 {
     public ChangeableData<int> CID_Number = new();
@@ -12,6 +15,7 @@ public record GameDataStructure
     public ChangeableData<int> GoldenBit = new();
     public List<Item> itemsCollected = new();
     public List<Property> PropertiesCollected = new();
+    public TimeSpan CLS = new();
 
     //World
     public Vector3? lastPlayerPos = null;
@@ -69,5 +73,6 @@ public struct ChangeableData<T>
             onValueChange?.Invoke(value);
         }
     }
+    [JsonIgnore]
     public Action<T> onValueChange;
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -13,11 +14,13 @@ public class DayNightCycle : MonoBehaviour
     [SerializeField] float maxMoonIntensity, maxSunIntensity;
     [SerializeField] Color NightAmbientLight, DayAmbientLight;
     [SerializeField] AnimationCurve lightChangeCurve;
-    [SerializeField] TextMeshProUGUI clockCounter;
+    [SerializeField] TextMeshProUGUI clockCounter,CLS_Text;
 
     float seconds = 0;
     float secondsHalfDay = 0, DaysPassed = 0;
     bool TimeAM;
+    private double _lastMinutes = 0;
+
     private void Awake()
     {
         seconds = hours * 3600;
@@ -29,6 +32,18 @@ public class DayNightCycle : MonoBehaviour
         directionalLight.Rotate(new Vector3(360 * (Time.deltaTime / seconds), 0, 0), Space.Self);
         updateIntensity();
         dayCounting();
+        CST_TextCounting();
+    }
+
+    private void CST_TextCounting()
+    {
+        StaticGamemanager.gameDataStructure.CLS += TimeSpan.FromSeconds(Time.deltaTime);
+        if(StaticGamemanager.gameDataStructure.CLS.TotalMinutes != _lastMinutes)
+        {
+            StaticGamemanager.SaveGameDataStructure();
+            _lastMinutes = StaticGamemanager.gameDataStructure.CLS.TotalMinutes;
+            CLS_Text.text = "<align=left><line-height=0>CLS:<align=right>\n"+ StaticGamemanager.gameDataStructure.CLS.ToString(@"hh\:mm");
+        }
     }
 
     IEnumerator dayAndNightImageSwitch()

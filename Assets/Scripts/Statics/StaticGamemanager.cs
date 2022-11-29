@@ -31,8 +31,13 @@ public static class StaticGamemanager
 
     public static void SaveGameDataStructure(bool newObj = false)
     {
-        string serializedData = JsonUtility.ToJson((gameDataStructure == null || newObj) ? new GameDataStructure() : gameDataStructure);
-        Debug.LogError(serializedData);
+        if (gameDataStructure == null || newObj)
+        {
+            gameDataStructure = new();
+            Debug.LogError("newObj : " + newObj + "," + gameDataStructure);
+        }
+
+        string serializedData = JsonConvert.SerializeObject(gameDataStructure);
         PlayerPrefs.SetString("GameDataStructure", serializedData);
     }
 }

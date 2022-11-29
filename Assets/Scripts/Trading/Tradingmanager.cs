@@ -48,8 +48,53 @@ public class Tradingmanager : SingleTon<Tradingmanager>
                 titleStr = titleStr.appendAlignment(item.priceInCash.ToString(), TextAlignment.right, true);
                 title.text = titleStr;
             }
+
+            //First Button
+            if (spawned.getComponentByName("firstButton", out Button firstButton))
+            {
+                firstButton.onClick.AddListener(()=> Button_firstButtonLogic(item,spawned.gameObject));
+            }
+            //First Button Text
+            if (spawned.getComponentByName("firstButtonText", out TextMeshProUGUI firstButtonText))
+            {
+                firstButtonText.text = "Use";
+            }
+
+
+            //Second Button
+            if (spawned.getComponentByName("secondButton", out Button secondButton))
+            {
+                secondButton.gameObject.SetActive(item.itemType != ItemType.food);
+                secondButton.onClick.AddListener(() => Button_secondButtonLogic(item, spawned.gameObject));
+            }
+            //Second Button Text
+            if (spawned.getComponentByName("secondButtonText", out TextMeshProUGUI secondButtonText))
+            {
+                secondButtonText.text = "Drop";
+            }
         }
     }
+    #region Use Item
+
+    void Button_firstButtonLogic(Item item,GameObject optionUI)
+    {
+        switch (item.itemType)
+        {
+            case ItemType.food:
+                Destroy(optionUI);
+                Hunger.Instance.getEnergy(item.floatValue);
+                break;
+            case ItemType.things:
+                break;
+        }
+    }
+
+    void Button_secondButtonLogic(Item item,GameObject optionUI)
+    {
+
+    }
+
+    #endregion
 
     private void addPropetryUI(Property property)
     {

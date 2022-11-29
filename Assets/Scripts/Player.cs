@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+
 using KinematicCharacterController.Examples;
 using UnityEngine;
 
@@ -61,6 +63,11 @@ public class Player : MonoBehaviour
         currentVehicle = null;
     }
 
+    private void Start()
+    {
+        _startTime = Time.time;
+    }
+
     Vector3 lastCharacterPos;
     void Update()
     {
@@ -102,12 +109,40 @@ public class Player : MonoBehaviour
 
     public void SetJumpStart()
     {
+        if (landCheck_Instance != null)
+        {
+            StopCoroutine(landCheck_Instance);
+        }
         m_Animator.SetTrigger("Jump");
     }
 
     public void SetJumpEnd()
     {
-        m_Animator.SetTrigger("Land");
+        if (landCheck_Instance != null)
+        {
+            StopCoroutine(landCheck_Instance);
+        }
+        landCheck_Instance = landCheck();
+        StartCoroutine(landCheck());
+    }
+
+    float _startTime = 0;
+    IEnumerator landCheck_Instance;
+    IEnumerator landCheck()
+    {
+        while (true)
+        {
+            yield return new WaitForEndOfFrame();
+            if (Physics.Linecast(m_ExampleCharacterController.transform.position + new Vector3(0, 0.3f, 0), m_ExampleCharacterController.transform.position - new Vector3(0, 0.3f, 0), out RaycastHit hit, cycleLandMask))
+            {
+                if ((Time.time - _startTime) > 0.5f)
+                {
+                    Debug.Log("here you go", hit.collider.gameObject);
+                    m_Animator.SetTrigger("Land");
+                }
+                yield break;
+            }
+        }
     }
 
     public void Ride()

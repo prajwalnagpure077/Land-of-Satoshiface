@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d448e8de50f40874a84366b6c873e4bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_money: 1
+  m_money: 10
   rotate: 1
   goldenBit: 0
 --- !u!65 &483630552549754199
