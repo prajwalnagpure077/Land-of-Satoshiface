@@ -178,6 +178,7 @@ public class Tradingmanager : SingleTon<Tradingmanager>
         }
     }
 
+    [SerializeField] AudioClipPreset buyAP;
     private void addItemToSale(Item item, Action onBuy)
     {
         var currentItemOnSale = Instantiate(_itemBuyPrefab, _itemBuyContainer);
@@ -186,6 +187,7 @@ public class Tradingmanager : SingleTon<Tradingmanager>
             //buy button init
             buyButton.onClick.AddListener(() =>
             {
+                buyAP.play();
                 buyItem(item, currentItemOnSale.gameObject);
                 onBuy?.Invoke();
             });
@@ -236,7 +238,11 @@ public class Tradingmanager : SingleTon<Tradingmanager>
         if (_propertyBuyBlock.getComponentByName("buyButton", out Button buyButton))
         {
             buyButton.onClick.RemoveAllListeners();
-            buyButton.onClick.AddListener(onPropertyBuy);
+            buyButton.onClick.AddListener(() =>
+            {
+                buyAP.play();
+                onPropertyBuy();
+            });
         }
         if (_propertyBuyBlock.getComponentByName("tradeDetails", out TextMeshProUGUI tradeDetailsText))
         {

@@ -20,16 +20,21 @@ public class Player : MonoBehaviour
     }
     [SerializeField] float m_CurrentHealth, m_MaxHealth;
     [SerializeField] GameObject m_HealthBar;
+    [SerializeField] ParticleSystem bloodParticle;
+    [SerializeField] AudioClipPreset hurtAP,deathAP;
     internal void DealDamage(float Damage)
     {
         m_CurrentHealth = Mathf.Clamp(m_CurrentHealth - Damage, 0, m_MaxHealth);
         m_HealthBar.transform.localScale = new((float)m_CurrentHealth / (float)m_MaxHealth, 1, 1);
+        bloodParticle.Play();
+        hurtAP.play();
         if (m_CurrentHealth <= 0)
         {
             if (currentVehicle != null)
                 currentVehicle.UnDrive();
             IsAlive = false;
             m_Animator.Play("death");
+            deathAP.play();
         }
     }
 
@@ -107,6 +112,7 @@ public class Player : MonoBehaviour
         m_Animator.SetFloat("Y", Mathf.Lerp(m_Animator.GetFloat("Y"), YPos, Time.unscaledDeltaTime * 30));
     }
 
+    [SerializeField] AudioClipPreset jumpStartAP, jumpEndAP;
     public void SetJumpStart()
     {
         if (landCheck_Instance != null)
@@ -114,8 +120,8 @@ public class Player : MonoBehaviour
             StopCoroutine(landCheck_Instance);
         }
         m_Animator.SetTrigger("Jump");
+        jumpStartAP.play();
     }
-
     public void SetJumpEnd()
     {
         if (landCheck_Instance != null)
@@ -124,6 +130,7 @@ public class Player : MonoBehaviour
         }
         landCheck_Instance = landCheck();
         StartCoroutine(landCheck());
+        jumpEndAP.play();
     }
 
     float _startTime = 0;

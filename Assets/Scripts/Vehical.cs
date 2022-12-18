@@ -1,8 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using KinematicCharacterController.Examples;
-using UnityEngine;
+
 using TMPro;
+
+using UnityEngine;
 
 public class Vehical : MonoBehaviour
 {
@@ -76,14 +76,24 @@ public class Vehical : MonoBehaviour
                 if (Input.GetKey(KeyCode.W))
                 {
                     m_rigidbody.AddForce(transform.forward * speed);
+                    moveFrontAP.play();
                 }
                 if (Input.GetKey(KeyCode.S))
                 {
                     m_rigidbody.AddForce(-transform.forward * speed);
+                    moveBackAP.play();
                 }
                 if (Jump && Input.GetKeyDown(KeyCode.Space) && (UseGround == false || isOnGround()))
                 {
                     m_rigidbody.AddForce(new Vector3(0, jumpForce, 0), ForceMode.Impulse);
+                }
+                if (Input.GetKeyUp(KeyCode.W))
+                {
+                    moveFrontAP.Stop();
+                }
+                if (Input.GetKeyUp(KeyCode.S))
+                {
+                    moveBackAP.Stop();
                 }
                 // if (Input.GetKey(KeyCode.A))
                 // {
@@ -126,6 +136,7 @@ public class Vehical : MonoBehaviour
         }
     }
 
+    [SerializeField] AudioClipPreset DriveAP, moveFrontAP, moveBackAP, IdleAP;
     private void Drive()
     {
         Player.currentVehicle = this;
@@ -138,6 +149,8 @@ public class Vehical : MonoBehaviour
         setupRigidbody();
         if (ObjectToEnableWhileRiding != null)
             ObjectToEnableWhileRiding.SetActive(true);
+        DriveAP.play();
+        IdleAP.play();
     }
     internal void UnDrive()
     {
@@ -177,6 +190,10 @@ public class Vehical : MonoBehaviour
             Destroy(m_rigidbody);
         if (ObjectToEnableWhileRiding != null)
             ObjectToEnableWhileRiding.SetActive(false);
+        IdleAP.Stop();
+        moveFrontAP.Stop();
+        moveBackAP.Stop();
+        DriveAP.Stop();
     }
 
     void setupRigidbody()

@@ -5,6 +5,7 @@ public class Money : MonoBehaviour
     [SerializeField] int m_money;
     [SerializeField] bool rotate;
     [SerializeField] bool goldenBit = false;
+    [SerializeField] AudioClipPreset collectAP;
     private void Start()
     {
         if (rotate)
@@ -16,6 +17,7 @@ public class Money : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            collectAP.play();
             if (goldenBit)
                 MoneyManager.addGoldenBit(m_money);
             else

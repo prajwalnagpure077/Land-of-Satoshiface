@@ -58,11 +58,13 @@ public class AI_Navigation : MonoBehaviour
             Run(false);
         }
     }
-
     void shoot()
     {
+        transform.LookAt(Player.CurrentPlayer,Vector3.up);
         if (Player.IsAlive)
+        {
             m_Animator.SetTrigger("Shoot");
+        }
     }
     void Run(bool t)
     {

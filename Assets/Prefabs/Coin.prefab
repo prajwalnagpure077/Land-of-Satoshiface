@@ -49,6 +49,9 @@ MonoBehaviour:
   m_money: 10
   rotate: 1
   goldenBit: 0
+  collectAP:
+    clips:
+    - {fileID: 8300000, guid: d05dee9aa6e7e884f9d931c95882b316, type: 3}
 --- !u!65 &483630552549754199
 BoxCollider:
   m_ObjectHideFlags: 0
